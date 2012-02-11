@@ -29,6 +29,10 @@ class taterm
 				term.child_exited.connect ( ()=> {
 					window.destroy();
 				});
+				/* TODO
+				   we should save the PID of the last active shell
+				   and then get the CWD of this on
+				*/
 				term.window_title_changed.connect ( ()=> {
 					pwd = cwd_of_pid(lastforkcmd);
 				});
