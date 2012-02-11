@@ -1,0 +1,15 @@
+taterm is a terminal emulator tailored to be used with tiling window managers.
+
+# Goals
+
+* Keep the current directory over multiple invocations
+    * Single instance via Gtk.Application
+
+* Work on Wayland (maybe, didn't test)
+
+* Use VTE3 (Don't need to reinvent the wheel and everything else around it)
+
+* No gui clutter
+    * Window, shell inside, period
+
+* No tabbing (tiling window manager, remember?)
