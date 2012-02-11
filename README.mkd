@@ -1,3 +1,5 @@
+# This is pre-alpha quality
+
 taterm is a terminal emulator tailored to be used with tiling window managers.
 
 # Goals
