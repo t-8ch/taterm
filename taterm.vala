@@ -15,16 +15,21 @@ class taterm
 
 		Gtk.Application app = new Gtk.Application("de.t-8ch.taterm", 0);
 
+		string pwd = null;
+
 		app.activate.connect(() => {
 				var window = new Gtk.Window();
 				var term = new Vte.Terminal();
 				window.maximize();
 				string[] targs = { Vte.get_user_shell() };
 				try {
-					term.fork_command_full(0, null, targs, null, 0, null, null);
+					term.fork_command_full(0, pwd, targs, null, 0, null, null);
 				} catch {}
 				term.child_exited.connect ( ()=> {
 					window.destroy();
+				});
+				term.window_title_changed.connect ( ()=> {
+					pwd = term.window_title;
 				});
 				window.add(term);
 				window.show_all();
