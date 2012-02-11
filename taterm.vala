@@ -22,6 +22,9 @@ class taterm
 				try {
 					term.fork_command_full(0, null, targs, null, 0, null, null);
 				} catch {}
+				term.child_exited.connect ( ()=> {
+					window.destroy();
+				});
 				window.add(term);
 				window.show_all();
 				Gtk.main();
