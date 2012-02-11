@@ -18,7 +18,7 @@ class taterm
 		app.activate.connect(() => {
 				var window = new Gtk.Window();
 				var term = new Vte.Terminal();
-				string[] targs = { "/bin/zsh" };
+				string[] targs = { Vte.get_user_shell() };
 				try {
 					term.fork_command_full(0, null, targs, null, 0, null, null);
 				} catch {}
