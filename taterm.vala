@@ -15,7 +15,7 @@ class taterm
 
 		Gtk.Application app = new Gtk.Application("de.t-8ch.taterm", 0);
 
-		string pwd = "/";
+		string pwd = GLib.Environment.get_variable("HOME");
 		GLib.Pid lastforkcmd = 0;
 
 		app.activate.connect(() => {
@@ -56,7 +56,7 @@ class taterm
 		} catch (Error err) {
 			stderr.printf(err.message);
 		}
-		return "/";
+		return GLib.Environment.get_variable("HOME");
 	}
 
 
