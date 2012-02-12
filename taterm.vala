@@ -21,6 +21,7 @@ class taterm
 		app.activate.connect(() => {
 				var window = new Gtk.Window();
 				var term = new Vte.Terminal();
+				term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 				window.maximize();
 				string[] targs = { Vte.get_user_shell() };
 				try {
