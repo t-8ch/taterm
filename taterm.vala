@@ -22,6 +22,7 @@ class taterm
 				var window = new Gtk.Window();
 				var term = new Vte.Terminal();
 				term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
+				term.scrollback_lines = -1; /* infinity */
 				window.maximize();
 				string[] targs = { Vte.get_user_shell() };
 				try {
