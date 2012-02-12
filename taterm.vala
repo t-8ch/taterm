@@ -36,6 +36,7 @@ class taterm
 				   and then get the CWD of this on
 				*/
 				term.window_title_changed.connect ( ()=> {
+					window.title = term.window_title;
 					pwd = cwd_of_pid(lastforkcmd);
 				});
 				window.add(term);
