@@ -6,12 +6,20 @@ using Vte;
 
 class taterm : Gtk.Application
 {
+
+	string pwd = GLib.Environment.get_variable("HOME");
+
 	public taterm()
 	{
-		Object(application_id: "de.t-8ch.taterm");
+		Object(application_id: "de.t-8ch.taterm6");
+		hold();
 
 		activate.connect(() => {
-			add_window(new tatermWindow());
+			var newWin = new tatermWindow(pwd);
+			add_window(newWin);
+			newWin.pwd_changed.connect((newpwd) => {
+				this.pwd = newpwd;
+			});
 		});
 	}
 
@@ -20,7 +28,9 @@ class taterm : Gtk.Application
 
 		Gtk.init(ref args);
 
-		return new taterm().run();
+		var foo = new taterm();
+		var bar = foo.run();
+		return bar;
 
 	}
 
@@ -31,10 +41,11 @@ class tatermWindow : Gtk.Window
 
 	Vte.Terminal term;
 
-	string pwd = GLib.Environment.get_variable("HOME");
+	public signal void pwd_changed(string pwd);
+
 	GLib.Pid shell;
 
-	public tatermWindow() {
+	public tatermWindow(string pwd) {
 		term = new Vte.Terminal();
 		term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 		term.scrollback_lines = -1; /* infinity */
@@ -52,11 +63,17 @@ class tatermWindow : Gtk.Window
 		*/
 		term.window_title_changed.connect ( ()=> {
 			this.title = term.window_title;
-			pwd = tatermUtils.cwd_of_pid(shell);
+			var newpwd = tatermUtils.cwd_of_pid(shell);
+
+			if (newpwd != pwd) {
+				pwd = newpwd;
+				pwd_changed(pwd);
+			}
 		});
+
 		this.add(term);
 		this.show_all();
-		Gtk.main();
+		// Gtk.main();
 	}
 }
 
