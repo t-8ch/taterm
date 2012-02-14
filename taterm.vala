@@ -8,10 +8,10 @@ class taterm : Gtk.Application
 {
 	public taterm()
 	{
-		this.application_id = "de.t-8ch.taterm";
+		Object(application_id: "de.t-8ch.taterm2");
 
 		activate.connect(() => {
-				add_window(new tatermWindow());
+			add_window(new tatermWindow());
 		});
 	}
 
