@@ -40,7 +40,16 @@ class taterm : Gtk.Application
 		public Window(string pwd)
 		{
 			this.pwd = pwd;
+
+			/*
+			   This throws a compiler warning
+			   new Vte.Terminal returns a Gtk.Widget,
+			   which is instantly cast to Vte.Terminal
+			   Seems there is no chance to avoid this
+			   (Maybe writing a own subclass, works for Gtk.Window)
+			*/
 			term = new Vte.Terminal();
+
 			term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			term.scrollback_lines = -1; /* infinity */
 			this.maximize();
