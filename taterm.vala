@@ -57,7 +57,9 @@ class taterm : Gtk.Application
 
 			try {
 				term.fork_command_full(0, pwd, targs, null, 0, null, out shell);
-			} catch {}
+			} catch (Error err) {
+				stderr.printf(err.message);
+			}
 
 
 			term.child_exited.connect ( ()=> {
