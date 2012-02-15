@@ -10,7 +10,7 @@ class taterm : Gtk.Application
 
 	public taterm()
 	{
-		Object(application_id: "de.t-8ch.taterm6");
+		Object(application_id: "de.t-8ch.taterm");
 		hold();
 
 		activate.connect(() => {
