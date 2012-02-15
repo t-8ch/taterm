@@ -30,7 +30,6 @@ class taterm : Gtk.Application
 
 	class Window : Gtk.Window
 	{
-
 		Vte.Terminal term;
 		GLib.Pid shell;
 		string pwd;
@@ -61,27 +60,22 @@ class taterm : Gtk.Application
 				stderr.printf(err.message);
 			}
 
-
 			term.child_exited.connect ( ()=> {
 				this.destroy();
 			});
-
 
 			term.window_title_changed.connect ( ()=> {
 				this.title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
-
 				if (newpwd != pwd) {
 					this.pwd = newpwd;
 					pwd_changed(this.pwd);
 				}
-
 			});
 
 			this.add(term);
 			this.show_all();
-			// Gtk.main();
 		}
 	}
 
