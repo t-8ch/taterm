@@ -52,7 +52,7 @@ class taterm : Gtk.Application
 
 			term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			term.scrollback_lines = -1; /* infinity */
-			this.maximize();
+			this.has_resize_grip = false;
 			string[] targs = { Vte.get_user_shell() };
 
 			try {
