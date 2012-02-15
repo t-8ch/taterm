@@ -6,7 +6,7 @@ using Vte;
 
 class taterm : Gtk.Application
 {
-	string pwd = GLib.Environment.get_variable("HOME");
+	string pwd = GLib.Environment.get_home_dir();
 
 	public taterm()
 	{
@@ -93,7 +93,7 @@ class taterm : Gtk.Application
 			} catch (Error err) {
 				stderr.printf(err.message);
 			}
-			return GLib.Environment.get_variable("HOME");
+			return GLib.Environment.get_home_dir();
 		}
 	}
 }
