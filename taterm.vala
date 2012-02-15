@@ -33,11 +33,13 @@ class taterm : Gtk.Application
 
 		Vte.Terminal term;
 		GLib.Pid shell;
+		string pwd;
 
 		public signal void pwd_changed(string pwd);
 
 		public Window(string pwd)
 		{
+			this.pwd = pwd;
 			term = new Vte.Terminal();
 			term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			term.scrollback_lines = -1; /* infinity */
@@ -48,18 +50,22 @@ class taterm : Gtk.Application
 				term.fork_command_full(0, pwd, targs, null, 0, null, out shell);
 			} catch {}
 
+
 			term.child_exited.connect ( ()=> {
 				this.destroy();
 			});
+
 
 			term.window_title_changed.connect ( ()=> {
 				this.title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
+
 				if (newpwd != pwd) {
-					pwd = newpwd;
-					pwd_changed(pwd);
+					this.pwd = newpwd;
+					pwd_changed(this.pwd);
 				}
+
 			});
 
 			this.add(term);
