@@ -14,3 +14,7 @@ There may be special support for various window managers in the future.
     * Window, shell inside, period
 
 * No tabbing (tiling window manager, remember?)
+
+##LICENSE
+
+GPLv3
