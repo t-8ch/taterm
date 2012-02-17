@@ -1,6 +1,5 @@
-# This is pre-alpha quality
-
-taterm is a terminal emulator tailored to be used with tiling window managers.
+Taterm is a terminal emulator tailored to be used with tiling window managers.
+There may be special support for various window managers in the future.
 
 # Goals
 
@@ -15,3 +14,7 @@ taterm is a terminal emulator tailored to be used with tiling window managers.
     * Window, shell inside, period
 
 * No tabbing (tiling window manager, remember?)
+
+##LICENSE
+
+GPLv3
