@@ -78,27 +78,54 @@ class taterm : Gtk.Application
 		}
 	}
 
-	class Terminal : Vte.Terminal {
+	class Terminal : Vte.Terminal
+	{
 
-		/* TODO
-		   make more general, want to get as many URIs as possible
-		   */
-		string regex_string = "[^ \n\r\t]*://.*[^ \n\r\t]";
-		// string regex_string = "((f|F)|(h|H)(t|T))(t|T)(p|P)(s|S)?://(([^|.< \t\r\n\\\"]*([.][^|< \t\r\n\\\"])?[^|.< \t\r\n\\\"]*)*[^< \t\r\n,;|\\\"]*[^|.< \t\r\n\\\"])?/*";
+		static string regex_string = "[^ \n\r\t]*://.*[^ \n\r\t]";
+		string match_uri = null;
 		GLib.Regex uri_regex;
 
-		public Terminal() {
+		public Terminal()
+		{
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			this.scrollback_lines = -1; /* infinity */
 
 			try {
+				/* TODO
+				 Do this only one time, it's allways the same
+				*/
 				uri_regex = new GLib.Regex(regex_string);
 			} catch (Error err) {
 				stderr.printf(err.message);
 			}
+			this.button_press_event.connect(check_regex);
 			this.match_add_gregex(uri_regex, 0);
 		}
 
+		private bool check_regex(Gdk.EventButton event)
+		{
+			/* left mousebutton ? */
+			if (event.button == 1) {
+				var x_pos = event.x / get_char_width();
+				var y_pos = event.y / get_char_height();
+				match_uri = this.match_check((long) x_pos, (long) y_pos, null);
+
+				if (match_uri != null) {
+					try {
+						/* TODO
+						 Maybe people don't want to call xdg-open
+						*/
+						GLib.Process.spawn_command_line_async(@"xdg-open $match_uri");
+					} catch (Error err) {
+						stderr.printf(err.message);
+					} finally {
+						match_uri = null;
+					}
+				}
+			}
+			/* continue calling signalhandlers, why should we stop? */
+			return false;
+		}
 	}
 
 	class Utils
