@@ -33,6 +33,7 @@ class taterm : Gtk.Application
 		Vte.Terminal term;
 		GLib.Pid shell;
 		string pwd;
+		string[] targs;
 
 		public signal void pwd_changed(string pwd);
 
@@ -47,12 +48,10 @@ class taterm : Gtk.Application
 			   Seems there is no chance to avoid this
 			   (Maybe writing a own subclass, works for Gtk.Window)
 			*/
-			term = new Vte.Terminal();
+			term = new Terminal();
 
-			term.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
-			term.scrollback_lines = -1; /* infinity */
 			this.has_resize_grip = false;
-			string[] targs = { Vte.get_user_shell() };
+			targs = { Vte.get_user_shell() };
 
 			try {
 				term.fork_command_full(0, pwd, targs, null, 0, null, out shell);
@@ -77,6 +76,15 @@ class taterm : Gtk.Application
 			this.add(term);
 			this.show_all();
 		}
+	}
+
+	class Terminal : Vte.Terminal {
+
+		public Terminal() {
+			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
+			this.scrollback_lines = -1; /* infinity */
+		}
+
 	}
 
 	class Utils
