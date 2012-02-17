@@ -80,9 +80,23 @@ class taterm : Gtk.Application
 
 	class Terminal : Vte.Terminal {
 
+		/* TODO
+		   make more general, want to get as many URIs as possible
+		   */
+		string regex_string = "[^ \n\r\t]*://.*[^ \n\r\t]";
+		// string regex_string = "((f|F)|(h|H)(t|T))(t|T)(p|P)(s|S)?://(([^|.< \t\r\n\\\"]*([.][^|< \t\r\n\\\"])?[^|.< \t\r\n\\\"]*)*[^< \t\r\n,;|\\\"]*[^|.< \t\r\n\\\"])?/*";
+		GLib.Regex uri_regex;
+
 		public Terminal() {
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			this.scrollback_lines = -1; /* infinity */
+
+			try {
+				uri_regex = new GLib.Regex(regex_string);
+			} catch (Error err) {
+				stderr.printf(err.message);
+			}
+			this.match_add_gregex(uri_regex, 0);
 		}
 
 	}
