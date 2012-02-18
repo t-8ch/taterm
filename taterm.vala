@@ -41,13 +41,6 @@ class taterm : Gtk.Application
 		{
 			this.pwd = pwd;
 
-			/*
-			   This throws a compiler warning
-			   new Vte.Terminal returns a Gtk.Widget,
-			   which is instantly cast to Vte.Terminal
-			   Seems there is no chance to avoid this
-			   (Maybe writing a own subclass, works for Gtk.Window)
-			*/
 			term = new Terminal();
 
 			this.has_resize_grip = false;
