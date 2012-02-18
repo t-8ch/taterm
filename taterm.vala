@@ -101,7 +101,12 @@ class taterm : Gtk.Application
 			if (event.button == 1) {
 				var x_pos = event.x / get_char_width();
 				var y_pos = event.y / get_char_height();
-				match_uri = this.match_check((long) x_pos, (long) y_pos, null);
+				/*
+				   this tag shouldn't be necessary but if we don't pass it to match_check()
+				   the whole thing just segfaults
+				*/
+				int tag;
+				match_uri = this.match_check((long) x_pos, (long) y_pos, out tag);
 
 				if (match_uri != null) {
 					try {
