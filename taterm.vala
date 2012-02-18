@@ -41,13 +41,6 @@ class taterm : Gtk.Application
 		{
 			this.pwd = pwd;
 
-			/*
-			   This throws a compiler warning
-			   new Vte.Terminal returns a Gtk.Widget,
-			   which is instantly cast to Vte.Terminal
-			   Seems there is no chance to avoid this
-			   (Maybe writing a own subclass, works for Gtk.Window)
-			*/
 			term = new Terminal();
 
 			this.has_resize_grip = false;
@@ -108,7 +101,12 @@ class taterm : Gtk.Application
 			if (event.button == 1) {
 				var x_pos = event.x / get_char_width();
 				var y_pos = event.y / get_char_height();
-				match_uri = this.match_check((long) x_pos, (long) y_pos, null);
+				/*
+				   this tag shouldn't be necessary but if we don't pass it to match_check()
+				   the whole thing just segfaults
+				*/
+				int tag;
+				match_uri = this.match_check((long) x_pos, (long) y_pos, out tag);
 
 				if (match_uri != null) {
 					try {
