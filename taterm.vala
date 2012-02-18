@@ -10,7 +10,7 @@ class taterm : Gtk.Application
 
 	public taterm()
 	{
-		Object(application_id: "de.t-8ch.taterm");
+		Object(application_id: "de.t-8ch.taterm5");
 		hold();
 
 		activate.connect(() => {
@@ -74,7 +74,10 @@ class taterm : Gtk.Application
 	class Terminal : Vte.Terminal
 	{
 
-		static string regex_string = "[^ \n\r\t]*://.*[^ \n\r\t]";
+		/* TODO: split regex string */
+					/*    scheme             user      host  port     path  query   part*/
+		static string regex_string = "[a-z][a-z+.-]+:[//]?.+(:?.*@)?.*(:\\d{1-5})?(/.*)*(\\?.*)?(#\\w*)?";
+		/* TODO                    don't match '/' here   ^   */
 		string match_uri = null;
 		GLib.Regex uri_regex;
 
@@ -108,7 +111,7 @@ class taterm : Gtk.Application
 						/* TODO
 						 Maybe people don't want to call xdg-open
 						*/
-						GLib.Process.spawn_command_line_async(@"xdg-open $match_uri");
+						GLib.Process.spawn_command_line_async(@"zenity --info --text=$match_uri");
 					} catch (Error err) {
 						stderr.printf(err.message);
 					} finally {
