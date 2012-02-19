@@ -11,7 +11,6 @@ class taterm : Gtk.Application
 	public taterm()
 	{
 		Object(application_id: "de.t-8ch.taterm");
-		hold();
 
 		activate.connect(() => {
 			var newWin = new Window(pwd);
