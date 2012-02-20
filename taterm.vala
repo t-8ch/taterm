@@ -73,7 +73,10 @@ class taterm : Gtk.Application
 	class Terminal : Vte.Terminal
 	{
 
-		static string regex_string = "[^ \n\r\t]*://.*[^ \n\r\t]";
+		/* TODO: split regex string */
+					/*    scheme             user      host  port     path  query   part*/
+		static string regex_string = "[a-z][a-z+.-]+:[//]?.+(:?.*@)?.*(:\\d{1-5})?(/.*)*(\\?.*)?(#\\w*)?";
+		/* TODO                    don't match '/' here   ^   */
 		string match_uri = null;
 		GLib.Regex uri_regex;
 
