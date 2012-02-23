@@ -7,16 +7,47 @@ using Vte;
 class taterm : Gtk.Application
 {
 	string pwd = GLib.Environment.get_home_dir();
+	public static GLib.Regex uri_regex;
+
+	/*
+		TODO
+
+		fix g_strconcat in C-code
+	*/
+	/*
+		Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
+	*/
+	static string hex_encode = "%[0-9A-F]{2}";
+	static string common_chars = "A-Za-z0-9-._~!$&'()*+,;=";
+	static string regex_string =
+		"([a-z0-9+.-]+):" +										// scheme
+		"//" +													//it has an authority
+		@"(([:$(common_chars)]|$(hex_encode))*@)?" +			//userinfo
+		@"([$(common_chars)]|$(hex_encode))*" +					//host
+		"(:\\d{1,5})?" +										//port
+		@"(/([:@/$(common_chars)]|$(hex_encode))*)?" +			//path
+
+						//"|" + //it doesn't have an authority:
+						//"(/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?" +	//path
+
+		// v  be flexible with shell escaping here
+		@"(\\\\?\\?([$(common_chars):/?@]|$(hex_encode))*)?" +	//query string
+		@"(\\\\?\\#([$(common_chars):/?@]|$(hex_encode))*)?"	//fragment
+		;
 
 	public taterm()
 	{
 		Object(application_id: "de.t-8ch.taterm");
 
+		try {
+			uri_regex = new GLib.Regex(regex_string);
+		} catch {}
+
 		activate.connect(() => {
 			var newWin = new Window(pwd);
 			add_window(newWin);
 			newWin.pwd_changed.connect((newpwd) => {
-				this.pwd = newpwd;
+				pwd = newpwd;
 			});
 		});
 	}
@@ -42,7 +73,7 @@ class taterm : Gtk.Application
 
 			term = new Terminal();
 
-			this.has_resize_grip = false;
+			has_resize_grip = false;
 			targs = { Vte.get_user_shell() };
 
 			try {
@@ -52,11 +83,11 @@ class taterm : Gtk.Application
 			}
 
 			term.child_exited.connect ( ()=> {
-				this.destroy();
+				destroy();
 			});
 
 			term.window_title_changed.connect ( ()=> {
-				this.title = term.window_title;
+				title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
 				if (newpwd != pwd) {
@@ -65,36 +96,24 @@ class taterm : Gtk.Application
 				}
 			});
 
-			this.add(term);
-			this.show_all();
+			add(term);
+			show_all();
 		}
 	}
 
 	class Terminal : Vte.Terminal
 	{
 
-		/* TODO: split regex string */
-					/*    scheme             user      host  port     path  query   part*/
-		static string regex_string = "[a-z][a-z+.-]+:[//]?.+(:?.*@)?.*(:\\d{1-5})?(/.*)*(\\?.*)?(#\\w*)?";
-		/* TODO                    don't match '/' here   ^   */
+
 		string match_uri = null;
-		GLib.Regex uri_regex;
 
 		public Terminal()
 		{
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
-			this.scrollback_lines = -1; /* infinity */
+			scrollback_lines = -1; /* infinity */
 
-			try {
-				/* TODO
-				 Do this only one time, it's allways the same
-				*/
-				uri_regex = new GLib.Regex(regex_string);
-			} catch (Error err) {
-				stderr.printf(err.message);
-			}
-			this.button_press_event.connect(check_regex);
-			this.match_add_gregex(uri_regex, 0);
+			button_press_event.connect(check_regex);
+			match_add_gregex(uri_regex, 0);
 		}
 
 		private bool check_regex(Gdk.EventButton event)
@@ -108,14 +127,14 @@ class taterm : Gtk.Application
 				   the whole thing just segfaults
 				*/
 				int tag;
-				match_uri = this.match_check((long) x_pos, (long) y_pos, out tag);
+				match_uri = match_check((long) x_pos, (long) y_pos, out tag);
 
 				if (match_uri != null) {
 					try {
 						/* TODO
 						 Maybe people don't want to call xdg-open
 						*/
-						GLib.Process.spawn_command_line_async(@"xdg-open $match_uri");
+						GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
 					} catch (Error err) {
 						stderr.printf(err.message);
 					} finally {
@@ -132,7 +151,7 @@ class taterm : Gtk.Application
 	{
 		public static string cwd_of_pid(GLib.Pid pid)
 		{
-			var cwdlink = "/proc/%d/cwd".printf(pid);
+			var cwdlink = @"/proc/$((int)pid)/cwd";
 			try {
 				return GLib.FileUtils.read_link(cwdlink);
 			} catch (Error err) {
