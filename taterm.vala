@@ -47,7 +47,7 @@ class taterm : Gtk.Application
 			var newWin = new Window(pwd);
 			add_window(newWin);
 			newWin.pwd_changed.connect((newpwd) => {
-				this.pwd = newpwd;
+				pwd = newpwd;
 			});
 		});
 	}
@@ -73,7 +73,7 @@ class taterm : Gtk.Application
 
 			term = new Terminal();
 
-			this.has_resize_grip = false;
+			has_resize_grip = false;
 			targs = { Vte.get_user_shell() };
 
 			try {
@@ -83,11 +83,11 @@ class taterm : Gtk.Application
 			}
 
 			term.child_exited.connect ( ()=> {
-				this.destroy();
+				destroy();
 			});
 
 			term.window_title_changed.connect ( ()=> {
-				this.title = term.window_title;
+				title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
 				if (newpwd != pwd) {
@@ -96,8 +96,8 @@ class taterm : Gtk.Application
 				}
 			});
 
-			this.add(term);
-			this.show_all();
+			add(term);
+			show_all();
 		}
 	}
 
@@ -110,10 +110,10 @@ class taterm : Gtk.Application
 		public Terminal()
 		{
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
-			this.scrollback_lines = -1; /* infinity */
+			scrollback_lines = -1; /* infinity */
 
-			this.button_press_event.connect(check_regex);
-			this.match_add_gregex(uri_regex, 0);
+			button_press_event.connect(check_regex);
+			match_add_gregex(uri_regex, 0);
 		}
 
 		private bool check_regex(Gdk.EventButton event)
@@ -127,7 +127,7 @@ class taterm : Gtk.Application
 				   the whole thing just segfaults
 				*/
 				int tag;
-				match_uri = this.match_check((long) x_pos, (long) y_pos, out tag);
+				match_uri = match_check((long) x_pos, (long) y_pos, out tag);
 
 				if (match_uri != null) {
 					try {
