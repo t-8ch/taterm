@@ -134,7 +134,7 @@ class taterm : Gtk.Application
 						/* TODO
 						 Maybe people don't want to call xdg-open
 						*/
-						GLib.Process.spawn_command_line_async(@"xdg-open $match_uri");
+						GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
 					} catch (Error err) {
 						stderr.printf(err.message);
 					} finally {
@@ -151,7 +151,7 @@ class taterm : Gtk.Application
 	{
 		public static string cwd_of_pid(GLib.Pid pid)
 		{
-			var cwdlink = "/proc/%d/cwd".printf(pid);
+			var cwdlink = @"/proc/$(pid)/cwd";
 			try {
 				return GLib.FileUtils.read_link(cwdlink);
 			} catch (Error err) {
