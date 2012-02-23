@@ -151,7 +151,7 @@ class taterm : Gtk.Application
 	{
 		public static string cwd_of_pid(GLib.Pid pid)
 		{
-			var cwdlink = @"/proc/$(pid)/cwd";
+			var cwdlink = @"/proc/$((int)pid)/cwd";
 			try {
 				return GLib.FileUtils.read_link(cwdlink);
 			} catch (Error err) {
