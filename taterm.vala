@@ -73,10 +73,34 @@ class taterm : Gtk.Application
 	class Terminal : Vte.Terminal
 	{
 
-		/* TODO: split regex string */
-					/*    scheme             user      host  port     path  query   part*/
-		static string regex_string = "[a-z][a-z+.-]+:[//]?.+(:?.*@)?.*(:\\d{1-5})?(/.*)*(\\?.*)?(#\\w*)?";
-		/* TODO                    don't match '/' here   ^   */
+		/*
+			TODO
+			FIXME
+			IMPORTANT
+
+			Move regex stuff away from here!!!
+			and fix g_strconcat in C-code
+		*/
+		/*
+			Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
+		*/
+		static string hex_encode = "%[0-9A-F]{2}";
+		static string common_chars = "a-z0-9-._~!$&'()*+,;=";
+		static string regex_string = 	"([a-z0-9+.-]+):" + // scheme
+							"//" + //it has an authority
+							@"(([:$(common_chars)]|$(hex_encode))*@)?" +	//userinfo
+							@"([$(common_chars)]|$(hex_encode))*" +			//host
+							"(:\\d{1,5})?" +						//port
+							@"(/([:@/$(common_chars)]|$(hex_encode))*)?" +	//path
+
+							//"|" + //it doesn't have an authority:
+							//"(/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?" +	//path
+
+							// v  be flexible with shell escaping here
+							@"\\\\?\\?([$(common_chars):/?@]|$(hex_encode))*" +	//query string
+							@"(\\\\?\\#([$(common_chars):/?@]|$(hex_encode))*)?"//fragment
+						;
+
 		string match_uri = null;
 		GLib.Regex uri_regex;
 
