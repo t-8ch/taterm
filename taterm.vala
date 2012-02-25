@@ -18,17 +18,14 @@ class taterm : Gtk.Application
 		Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
 	*/
 	static string hex_encode = "%[0-9A-F]{2}";
-	static string common_chars = "A-Za-z0-9-._~!$&'()*+,;=";
+	static string common_chars = "a-z0-9-._~!$&'()*+,;=";
 	static string regex_string =
-		"([a-z0-9+.-]+):" +										// scheme
-		"//" +													//it has an authority
+		"([a-z0-9][a-z0-9+.-]+):" +								// scheme
+		"(//)?" +												//it has an authority
 		@"(([:$(common_chars)]|$(hex_encode))*@)?" +			//userinfo
 		@"([$(common_chars)]|$(hex_encode))*" +					//host
 		"(:\\d{1,5})?" +										//port
 		@"(/([:@/$(common_chars)]|$(hex_encode))*)?" +			//path
-
-						//"|" + //it doesn't have an authority:
-						//"(/?(?:[a-z0-9-._~!$&'()*+,;=:@]|%[0-9A-F]{2})+(?:[a-z0-9-._~!$&'()*+,;=:@/]|%[0-9A-F]{2})*)?" +	//path
 
 		// v  be flexible with shell escaping here
 		@"(\\\\?\\?([$(common_chars):/?@]|$(hex_encode))*)?" +	//query string
@@ -40,7 +37,8 @@ class taterm : Gtk.Application
 		Object(application_id: "de.t-8ch.taterm");
 
 		try {
-			uri_regex = new GLib.Regex(regex_string);
+			var regex_flags = RegexCompileFlags.CASELESS + RegexCompileFlags.OPTIMIZE;
+			uri_regex = new GLib.Regex(regex_string, regex_flags);
 		} catch {}
 
 		activate.connect(() => {
