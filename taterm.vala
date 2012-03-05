@@ -39,12 +39,7 @@ class taterm : Gtk.Application
 		activate.connect(() => {
 			var newWin = new Window(pwd);
 			add_window(newWin);
-            /*
-			 *newWin.pwd_changed.connect((newpwd) => {
-			 *    pwd = newpwd;
-			 *});
-             */
-			newWin.focus_in_event.connect(() => {
+			newWin.focus_out_event.connect(() => {
 				pwd = newWin.pwd;
 				return false;
 			});
