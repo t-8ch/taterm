@@ -75,8 +75,17 @@ class taterm : Gtk.Application
 				stderr.printf(err.message);
 			}
 
+			this.focus_in_event.connect( () => {
+				this.urgency_hint = false;
+				return false;
+			});
+
 			term.child_exited.connect ( ()=> {
 				destroy();
+			});
+
+			term.beep.connect( () => {
+				this.urgency_hint = true;
 			});
 
 			term.window_title_changed.connect ( ()=> {
