@@ -39,8 +39,9 @@ class taterm : Gtk.Application
 		activate.connect(() => {
 			var newWin = new Window(pwd);
 			add_window(newWin);
-			newWin.pwd_changed.connect((newpwd) => {
-				pwd = newpwd;
+			newWin.focus_out_event.connect(() => {
+				pwd = newWin.pwd;
+				return false;
 			});
 		});
 	}
@@ -55,7 +56,7 @@ class taterm : Gtk.Application
 	{
 		Vte.Terminal term;
 		GLib.Pid shell;
-		string pwd;
+		public string pwd;
 		string[] targs;
 
 		public signal void pwd_changed(string pwd);
