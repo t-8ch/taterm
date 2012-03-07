@@ -15,16 +15,18 @@ class taterm : Gtk.Application
 	static const string hex_encode = "%[0-9A-F]{2}";
 	static const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
 	static const string regex_string =
+        "(?<=[$\\s({\"\'.,;])" +                                // look behind
 		"([a-z0-9][a-z0-9+.-]+):" +								// scheme
 		"(//)?" +												//it has an authority
 		"(([:"+common_chars+"]|"+hex_encode+")*@)?" +			//userinfo
-		"(["+common_chars+"]|"+hex_encode+")*" +				//host
+		"(["+common_chars+"]|"+hex_encode+"){3,}" +				//host
 		"(:\\d{1,5})?" +										//port
 		"(/([:@/"+common_chars+")]|"+hex_encode+")*)?" +		//path
 
 		// v  be flexible with shell escaping here
 		"(\\\\?\\?(["+common_chars+":/?@]|"+hex_encode+")*)?" +	//query string
-		"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"	//fragment
+		"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"+ //fragment
+        "(?=[\\s)}\"\',;]?)"                                    // look ahead
 		;
 
 	public taterm()
