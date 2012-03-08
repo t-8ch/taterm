@@ -115,6 +115,8 @@ class taterm : Gtk.Application
 		{
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
+			/* need this since GTK 3.3.18 */
+			events = Gdk.EventMask.SCROLL_MASK;
 
 			button_press_event.connect(check_regex);
 			match_add_gregex(uri_regex, 0);
