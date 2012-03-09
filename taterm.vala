@@ -34,13 +34,16 @@ class taterm : Gtk.Application
 		try {
 			var regex_flags = RegexCompileFlags.CASELESS + RegexCompileFlags.OPTIMIZE;
 			uri_regex = new GLib.Regex(regex_string, regex_flags);
-		} catch {}
+		} catch (RegexError err) {
+			GLib.assert_not_reached ();
+		}
 
 		activate.connect(() => {
 			var newWin = new Window(pwd);
 			add_window(newWin);
 			newWin.focus_out_event.connect(() => {
 				pwd = newWin.pwd;
+				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 				return false;
 			});
 		});
@@ -79,7 +82,7 @@ class taterm : Gtk.Application
 			this.focus_in_event.connect( () => {
 				this.urgency_hint = false;
 				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
-				//return false;
+				return false;
 			});
 
 			term.child_exited.connect ( ()=> {
@@ -148,7 +151,7 @@ class taterm : Gtk.Application
 					 Maybe people don't want to call xdg-open
 					*/
 					GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
-				} catch (Error err) {
+				} catch (SpawnError err) {
 					stderr.printf(err.message);
 				} finally {
 					match_uri = null;
@@ -164,7 +167,7 @@ class taterm : Gtk.Application
 			var cwdlink = @"/proc/$((int)pid)/cwd";
 			try {
 				return GLib.FileUtils.read_link(cwdlink);
-			} catch (Error err) {
+			} catch (FileError err) {
 				stderr.printf(err.message);
 			}
 			return GLib.Environment.get_home_dir();
