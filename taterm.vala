@@ -78,7 +78,8 @@ class taterm : Gtk.Application
 
 			this.focus_in_event.connect( () => {
 				this.urgency_hint = false;
-				return false;
+				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
+				//return false;
 			});
 
 			term.child_exited.connect ( ()=> {
@@ -121,13 +122,14 @@ class taterm : Gtk.Application
 
 		private bool handle_button(Gdk.EventButton event){
 			/* left mousebutton ? */
-			if (event.button == 1) {
+			if (event.button == Gdk.BUTTON_PRIMARY) {
 				check_regex(
 						(long) event.x/get_char_width(),
 						(long) event.x/get_char_width()
 				);
 			}
 			/* continue calling signalhandlers, why should we stop? */
+			/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 			return false;
 		}
 
