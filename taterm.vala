@@ -119,6 +119,8 @@ class taterm : Gtk.Application
 		{
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
+			/* TODO use property when available */
+			set_mouse_autohide(true);
 			/* need this since GTK 3.3.18 */
 			events = Gdk.EventMask.SCROLL_MASK;
 
