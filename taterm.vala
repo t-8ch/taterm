@@ -131,7 +131,7 @@ class taterm : Gtk.Application
 			if (event.button == Gdk.BUTTON_PRIMARY) {
 				check_regex(
 						(long) event.x/get_char_width(),
-						(long) event.x/get_char_width()
+						(long) event.y/get_char_height()
 				);
 			}
 			/* continue calling signalhandlers, why should we stop? */
