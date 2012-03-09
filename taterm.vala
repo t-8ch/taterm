@@ -115,38 +115,43 @@ class taterm : Gtk.Application
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
 
-			button_press_event.connect(check_regex);
+			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
 		}
 
-		private bool check_regex(Gdk.EventButton event)
-		{
+		private bool handle_button(Gdk.EventButton event){
 			/* left mousebutton ? */
 			if (event.button == 1) {
-				var x_pos = event.x / get_char_width();
-				var y_pos = event.y / get_char_height();
-				/*
-				   this tag shouldn't be necessary but if we don't pass it to match_check()
-				   the whole thing just segfaults
-				*/
-				int tag;
-				match_uri = match_check((long) x_pos, (long) y_pos, out tag);
-
-				if (match_uri != null) {
-					try {
-						/* TODO
-						 Maybe people don't want to call xdg-open
-						*/
-						GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
-					} catch (Error err) {
-						stderr.printf(err.message);
-					} finally {
-						match_uri = null;
-					}
-				}
+				check_regex(
+						(long) event.x/get_char_width(),
+						(long) event.x/get_char_width()
+				);
 			}
 			/* continue calling signalhandlers, why should we stop? */
 			return false;
+		}
+
+		private void check_regex(long x_pos, long y_pos)
+		{
+			/*
+			   this tag shouldn't be necessary but if we don't pass it to match_check()
+			   the whole thing just segfaults
+			*/
+			int tag;
+			match_uri = match_check( x_pos, y_pos, out tag);
+
+			if (match_uri != null) {
+				try {
+					/* TODO
+					 Maybe people don't want to call xdg-open
+					*/
+					GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
+				} catch (Error err) {
+					stderr.printf(err.message);
+				} finally {
+					match_uri = null;
+				}
+			}
 		}
 	}
 
