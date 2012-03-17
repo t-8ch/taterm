@@ -20,6 +20,12 @@ using GLib;
 using Gtk;
 using Vte;
 
+public static int main(string[] args)
+{
+	Gtk.init(ref args);
+	return new taterm().run();
+}
+
 class taterm : Gtk.Application
 {
 	string pwd = GLib.Environment.get_home_dir();
@@ -63,12 +69,6 @@ class taterm : Gtk.Application
 				return false;
 			});
 		});
-	}
-
-	public static int main(string[] args)
-	{
-		Gtk.init(ref args);
-		return new taterm().run();
 	}
 
 	class Window : Gtk.Window
