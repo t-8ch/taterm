@@ -41,7 +41,7 @@ class taterm : Gtk.Application
 		// v  be flexible with shell escaping here
 		"(\\\\?\\?(["+common_chars+":/?@]|"+hex_encode+")*)?"   + // query string
 		"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"  + // fragment
-		"(?=[\\s)}>\"\',;]?)"                                      // look ahead
+		"(?=[\\s)}>\"\',;])"                                      // look ahead
 		;
 
 	public taterm()
