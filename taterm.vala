@@ -145,7 +145,8 @@ class taterm : Gtk.Application
 
 		private bool handle_button(Gdk.EventButton event){
 			/* left mousebutton ? */
-			if (event.button == Gdk.BUTTON_PRIMARY) {
+			/* TODO use Gdk.BUTTON_PRIMARY when available */
+			if (event.button == 1) {
 				check_regex(
 						(long) event.x/get_char_width(),
 						(long) event.y/get_char_height()
