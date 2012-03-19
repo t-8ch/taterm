@@ -136,6 +136,8 @@ class taterm : Gtk.Application
 			scrollback_lines = -1; /* infinity */
 			/* TODO use property when available */
 			set_mouse_autohide(true);
+			/* TODO remove when it gets detected again (VTE 0.32.0) */
+			emulation = "xterm";
 			/* need this since GTK 3.3.18 */
 			events = Gdk.EventMask.SCROLL_MASK;
 
