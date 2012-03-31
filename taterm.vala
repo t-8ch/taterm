@@ -135,8 +135,6 @@ class taterm : Gtk.Application
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
 			pointer_autohide = true;
-			/* TODO remove when it gets detected again (VTE 0.32.0) */
-			emulation = "xterm";
 
 			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
