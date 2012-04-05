@@ -68,8 +68,8 @@ class taterm : Gtk.Application
 				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 				return false;
 			});
-		});
-	}
+		}); // activate.connect()
+	} // taterm()
 
 	class Window : Gtk.Window
 	{
@@ -121,8 +121,8 @@ class taterm : Gtk.Application
 
 			add(term);
 			show_all();
-		}
-	}
+		} // Window()
+	} // class Window
 
 	class Terminal : Vte.Terminal
 	{
@@ -172,9 +172,9 @@ class taterm : Gtk.Application
 				} finally {
 					match_uri = null;
 				}
-			}
-		}
-	}
+			} // if
+		} // check_regex
+	} // class Terminal
 
 	class Utils
 	{
@@ -188,5 +188,5 @@ class taterm : Gtk.Application
 			}
 			return GLib.Environment.get_home_dir();
 		}
-	}
+	} // class Utils
 }
