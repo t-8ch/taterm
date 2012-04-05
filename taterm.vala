@@ -23,10 +23,10 @@ using Vte;
 public static int main(string[] args)
 {
 	Gtk.init(ref args);
-	return new taterm().run();
+	return new Taterm().run();
 }
 
-class taterm : Gtk.Application
+class Taterm : Gtk.Application
 {
 	string pwd = GLib.Environment.get_home_dir();
 	public static GLib.Regex uri_regex;
@@ -49,7 +49,7 @@ class taterm : Gtk.Application
 		"(?=[\\s)}>\"\',;])"                                      // look ahead
 		;
 
-	public taterm()
+	public Taterm()
 	{
 		Object(application_id: "de.t-8ch.taterm");
 
@@ -69,7 +69,7 @@ class taterm : Gtk.Application
 				return false;
 			});
 		}); // activate.connect()
-	} // taterm()
+	} // Taterm()
 
 	class Window : Gtk.Window
 	{
