@@ -95,21 +95,21 @@ class Taterm : Gtk.Application
 				stderr.printf(err.message);
 			}
 
-			focus_in_event.connect( () => {
+			focus_in_event.connect(() => {
 				urgency_hint = false;
 				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 				return false;
 			});
 
-			term.child_exited.connect ( ()=> {
+			term.child_exited.connect(() => {
 				destroy();
 			});
 
-			term.beep.connect( () => {
+			term.beep.connect(() => {
 				urgency_hint = true;
 			});
 
-			term.window_title_changed.connect ( ()=> {
+			term.window_title_changed.connect(() => {
 				title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
