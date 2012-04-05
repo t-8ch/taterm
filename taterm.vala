@@ -57,7 +57,7 @@ class Taterm : Gtk.Application
 			var regex_flags = RegexCompileFlags.CASELESS + RegexCompileFlags.OPTIMIZE;
 			uri_regex = new GLib.Regex(regex_string, regex_flags);
 		} catch (RegexError err) {
-			GLib.assert_not_reached ();
+			GLib.assert_not_reached();
 		}
 
 		activate.connect(() => {
@@ -160,7 +160,7 @@ class Taterm : Gtk.Application
 			   the whole thing just segfaults
 			*/
 			int tag;
-			match_uri = match_check( x_pos, y_pos, out tag);
+			match_uri = match_check(x_pos, y_pos, out tag);
 
 			if (match_uri != null) {
 				try {
