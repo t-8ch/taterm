@@ -61,10 +61,10 @@ class taterm : Gtk.Application
 		}
 
 		activate.connect(() => {
-			var newWin = new Window(pwd);
-			add_window(newWin);
-			newWin.focus_out_event.connect(() => {
-				pwd = newWin.pwd;
+			var new_win = new Window(pwd);
+			add_window(new_win);
+			new_win.focus_out_event.connect(() => {
+				pwd = new_win.pwd;
 				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 				return false;
 			});
