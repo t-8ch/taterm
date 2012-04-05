@@ -95,8 +95,8 @@ class taterm : Gtk.Application
 				stderr.printf(err.message);
 			}
 
-			this.focus_in_event.connect( () => {
-				this.urgency_hint = false;
+			focus_in_event.connect( () => {
+				urgency_hint = false;
 				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
 				return false;
 			});
@@ -106,7 +106,7 @@ class taterm : Gtk.Application
 			});
 
 			term.beep.connect( () => {
-				this.urgency_hint = true;
+				urgency_hint = true;
 			});
 
 			term.window_title_changed.connect ( ()=> {
@@ -114,8 +114,8 @@ class taterm : Gtk.Application
 				var newpwd = Utils.cwd_of_pid(shell);
 
 				if (newpwd != pwd) {
-					this.pwd = newpwd;
-					pwd_changed(this.pwd);
+					pwd = newpwd;
+					pwd_changed(pwd);
 				}
 			});
 
