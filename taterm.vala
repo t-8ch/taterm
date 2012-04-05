@@ -140,7 +140,8 @@ class Taterm : Gtk.Application
 			match_add_gregex(uri_regex, 0);
 		}
 
-		private bool handle_button(Gdk.EventButton event){
+		private bool handle_button(Gdk.EventButton event)
+		{
 			if (event.button == Gdk.BUTTON_PRIMARY) {
 				check_regex(
 						(long) event.x/get_char_width(),
