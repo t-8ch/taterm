@@ -5,3 +5,6 @@ taterm:
 
 % : %.vala
 	$(VALAC) $(VALA_FLAGS) $^
+
+%.c : %.vala
+	$(VALAC) -C $(VALA_FLAGS) $^
