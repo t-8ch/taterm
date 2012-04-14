@@ -115,7 +115,7 @@ class Taterm : Gtk.Application
 
 				if (newpwd != pwd) {
 					pwd = newpwd;
-					pwd_changed(pwd);
+					pwd_changed(newpwd);
 				}
 			});
 
