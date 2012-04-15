@@ -113,8 +113,8 @@ class Taterm : Gtk.Application
 				title = term.window_title;
 				var newpwd = Utils.cwd_of_pid(shell);
 
-				if (newpwd != pwd) {
-					pwd = newpwd;
+				if (newpwd != this.pwd) {
+					this.pwd = newpwd;
 					pwd_changed(newpwd);
 				}
 			});
