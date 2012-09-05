@@ -164,11 +164,8 @@ class Taterm : Gtk.Application
 
 			if (match_uri != null) {
 				try {
-					/* TODO
-					 Maybe people don't want to call xdg-open
-					*/
-					GLib.Process.spawn_command_line_async(@"xdg-open $(match_uri)");
-				} catch (SpawnError err) {
+					Gtk.show_uri(null, match_uri, Gdk.CURRENT_TIME);
+				} catch (Error err) {
 					stderr.printf(err.message);
 				} finally {
 					match_uri = null;
