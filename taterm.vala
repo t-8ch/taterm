@@ -19,6 +19,9 @@
 using GLib;
 using Gtk;
 using Vte;
+using Pango;
+
+static const string FONT = "11";
 
 public static int main(string[] args)
 {
@@ -49,6 +52,8 @@ class Taterm : Gtk.Application
 		"(?=[\\s)}>\"\',;])"                                      // look ahead
 		;
 
+	static Pango.FontDescription font;
+
 	public Taterm()
 	{
 		Object(application_id: "de.t-8ch.taterm");
@@ -59,6 +64,8 @@ class Taterm : Gtk.Application
 		} catch (RegexError err) {
 			GLib.assert_not_reached();
 		}
+
+		font = Pango.FontDescription.from_string(FONT);
 
 		activate.connect(() => {
 			var new_win = new Window(pwd);
@@ -135,6 +142,8 @@ class Taterm : Gtk.Application
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
 			pointer_autohide = true;
+			/*font_desc = Pango.FontDescription.from_string("11");*/
+			font_desc = font;
 
 			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
