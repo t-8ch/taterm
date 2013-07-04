@@ -32,60 +32,62 @@ static const string[] COLORS = {
 static const string FG_COLOR = "#c0c0c0";
 static const string BG_COLOR = "#000000";
 
+static Pango.FontDescription font;
+static Gdk.Color[] palette;
+static Gdk.Color fg_color;
+static Gdk.Color bg_color;
+
+public static GLib.Regex uri_regex;
+
+/*
+	Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
+*/
+static const string hex_encode = "%[0-9A-F]{2}";
+static const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
+static const string regex_string =
+	"([a-z0-9][a-z0-9+.-]+):"                               + // scheme
+	"(//)?"                                                 + // it has an authority
+	"(([:"+common_chars+"]|"+hex_encode+")*@)?"             + // userinfo
+	"(["+common_chars+"]|"+hex_encode+"){3,}"               + // host
+	"(:\\d{1,5})?"                                          + // port
+	"(/([:@/"+common_chars+")]|"+hex_encode+")*)?"          + // path
+	// v  be flexible with shell escaping here
+	"(\\\\?\\?(["+common_chars+":/?@]|"+hex_encode+")*)?"   + // query string
+	"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"  + // fragment
+	"(?=[\\s)}>\"\',;])"                                      // look ahead
+	;
+
 public static int main(string[] args)
 {
 	Gtk.init(ref args);
+
+	try {
+		var regex_flags = RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE;
+		uri_regex = new GLib.Regex(regex_string, regex_flags);
+	} catch (RegexError err) {
+		GLib.assert_not_reached();
+	}
+
+	font = Pango.FontDescription.from_string(FONT);
+
+	for (int i = 0; i < 16; i++) {
+		Gdk.Color color = Gdk.Color();
+		Gdk.Color.parse(COLORS[i], out color);
+		palette += color;
+	}
+	Gdk.Color.parse(FG_COLOR, out fg_color);
+	Gdk.Color.parse(BG_COLOR, out bg_color);
+
 	return new Taterm().run();
 }
 
 class Taterm : Gtk.Application
 {
 	string pwd = GLib.Environment.get_home_dir();
-	public static GLib.Regex uri_regex;
-
-	/*
-		Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
-	*/
-	static const string hex_encode = "%[0-9A-F]{2}";
-	static const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
-	static const string regex_string =
-		"([a-z0-9][a-z0-9+.-]+):"                               + // scheme
-		"(//)?"                                                 + // it has an authority
-		"(([:"+common_chars+"]|"+hex_encode+")*@)?"             + // userinfo
-		"(["+common_chars+"]|"+hex_encode+"){3,}"               + // host
-		"(:\\d{1,5})?"                                          + // port
-		"(/([:@/"+common_chars+")]|"+hex_encode+")*)?"          + // path
-		// v  be flexible with shell escaping here
-		"(\\\\?\\?(["+common_chars+":/?@]|"+hex_encode+")*)?"   + // query string
-		"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"  + // fragment
-		"(?=[\\s)}>\"\',;])"                                      // look ahead
-		;
-
-	static Pango.FontDescription font;
-	static Gdk.Color[] palette = {};
-	static Gdk.Color fg_color;
-	static Gdk.Color bg_color;
 
 	public Taterm()
 	{
 		Object(application_id: "de.t-8ch.taterm");
-
-		try {
-			var regex_flags = RegexCompileFlags.CASELESS + RegexCompileFlags.OPTIMIZE;
-			uri_regex = new GLib.Regex(regex_string, regex_flags);
-		} catch (RegexError err) {
-			GLib.assert_not_reached();
-		}
-
-		font = Pango.FontDescription.from_string(FONT);
-
-		for (int i = 0; i < 16; i++) {
-			Gdk.Color color = Gdk.Color();
-			Gdk.Color.parse(COLORS[i], out color);
-			palette += color;
-		}
-		Gdk.Color.parse(FG_COLOR, out fg_color);
-		Gdk.Color.parse(BG_COLOR, out bg_color);
 
 		activate.connect(() => {
 			var new_win = new Window(pwd);
