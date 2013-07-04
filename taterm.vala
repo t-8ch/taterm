@@ -59,8 +59,6 @@ static const string regex_string =
 
 public static int main(string[] args)
 {
-	Gtk.init(ref args);
-
 	try {
 		var regex_flags = RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE;
 		uri_regex = new GLib.Regex(regex_string, regex_flags);
