@@ -21,7 +21,7 @@ using Gtk;
 using Vte;
 using Pango;
 
-static const string FONT = "11";
+static const string FONT = "Droid Sans Mono 10";
 static const string[] COLORS = {
 	"#000000", "#e5393d", "#64dd4a", "#ff9700",
 	"#0098dc", "#c64ae1", "#d5d7ff", "#ffffff",
@@ -161,8 +161,7 @@ class Taterm : Gtk.Application
 			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
 			scrollback_lines = -1; /* infinity */
 			pointer_autohide = true;
-			/*font_desc = Pango.FontDescription.from_string("11");*/
-			font_desc = font;
+			set_font(font);
 			set_colors(fg_color, bg_color, palette);
 
 
