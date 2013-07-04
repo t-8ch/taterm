@@ -22,6 +22,14 @@ using Vte;
 using Pango;
 
 static const string FONT = "11";
+static const string[] COLORS = {
+	"#000000", "#e5393d", "#64dd4a", "#ff9700",
+	"#0098dc", "#c64ae1", "#d5d7ff", "#ffffff",
+	"#28292A", "#e5393d", "#64dd4a", "#ff9700",
+	"#0098dc", "#c64ae1", "#d5d7ff", "#ffffff"
+};
+static const string FG_COLOR = "#e8e8d3";
+static const string BG_COLOR = "#151515";
 
 public static int main(string[] args)
 {
@@ -53,6 +61,9 @@ class Taterm : Gtk.Application
 		;
 
 	static Pango.FontDescription font;
+	static Gdk.Color[] palette = {};
+	static Gdk.Color fg_color;
+	static Gdk.Color bg_color;
 
 	public Taterm()
 	{
@@ -66,6 +77,14 @@ class Taterm : Gtk.Application
 		}
 
 		font = Pango.FontDescription.from_string(FONT);
+
+		for (int i = 0; i < 16; i++) {
+			Gdk.Color color = Gdk.Color();
+			Gdk.Color.parse(COLORS[i], out color);
+			palette += color;
+		}
+		Gdk.Color.parse(FG_COLOR, out fg_color);
+		Gdk.Color.parse(BG_COLOR, out bg_color);
 
 		activate.connect(() => {
 			var new_win = new Window(pwd);
@@ -144,6 +163,8 @@ class Taterm : Gtk.Application
 			pointer_autohide = true;
 			/*font_desc = Pango.FontDescription.from_string("11");*/
 			font_desc = font;
+			set_colors(fg_color, bg_color, palette);
+
 
 			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
