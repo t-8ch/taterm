@@ -21,15 +21,16 @@ using Gtk;
 using Vte;
 using Pango;
 
-static const string FONT = "Droid Sans Mono 10";
+static const string FONT = "11";
 static const string[] COLORS = {
-	"#000000", "#e5393d", "#64dd4a", "#ff9700",
-	"#0098dc", "#c64ae1", "#d5d7ff", "#ffffff",
-	"#28292A", "#e5393d", "#64dd4a", "#ff9700",
-	"#0098dc", "#c64ae1", "#d5d7ff", "#ffffff"
+	"#000000", "#c00000", "#00c000", "#c0c000",
+	"#0000c0", "#c000c0", "#00c0c0", "#c0c0c0",
+	"#3f3f3f", "#ff3f3f", "#3fff3f", "#ffff3f",
+	"#3f3fff", "#ff3fff", "#3fffff", "#ffffff"
 };
-static const string FG_COLOR = "#e8e8d3";
-static const string BG_COLOR = "#151515";
+
+static const string FG_COLOR = "#c0c0c0";
+static const string BG_COLOR = "#000000";
 
 public static int main(string[] args)
 {
