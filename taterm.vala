@@ -32,6 +32,8 @@ static const string[] COLORS = {
 static const string FG_COLOR = "#c0c0c0";
 static const string BG_COLOR = "#000000";
 
+static const string WORD_CHARS = "-A-Za-z0-9_$.+!*(),;:@&=?/~#%";
+
 static Pango.FontDescription font;
 static Gdk.Color[] palette;
 static Gdk.Color fg_color;
@@ -164,6 +166,7 @@ class Taterm : Gtk.Application
 			pointer_autohide = true;
 			set_font(font);
 			set_colors(fg_color, bg_color, palette);
+			set_word_chars(WORD_CHARS);
 
 
 			button_press_event.connect(handle_button);
