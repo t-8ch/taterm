@@ -68,7 +68,7 @@ public static int main(string[] args)
 
 	font = Pango.FontDescription.from_string(FONT);
 
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < COLORS.length; i++) {
 		Gdk.Color color = Gdk.Color();
 		Gdk.Color.parse(COLORS[i], out color);
 		palette += color;
