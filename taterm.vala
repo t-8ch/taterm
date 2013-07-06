@@ -32,7 +32,7 @@ static const string[] COLORS = {
 static const string FG_COLOR = "#c0c0c0";
 static const string BG_COLOR = "#000000";
 
-static const string WORD_CHARS = "-A-Za-z0-9_$.+!*(),;:@&=?/~#%";
+static const string WORD_CHARS = "";
 
 static Pango.FontDescription font;
 static Gdk.Color[] palette;
