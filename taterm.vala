@@ -118,7 +118,7 @@ class Taterm : Gtk.Application
 			try {
 				term.spawn_sync(Vte.PtyFlags.DEFAULT, pwd, targs, null, 0, null, out shell);
 			} catch (Error err) {
-				stderr.printf(err.message);
+				stderr.printf("%s\n", err.message);
 			}
 
 			focus_in_event.connect(() => {
@@ -194,7 +194,7 @@ class Taterm : Gtk.Application
 				try {
 					Gtk.show_uri(null, match_uri, Gdk.CURRENT_TIME);
 				} catch (Error err) {
-					stderr.printf(err.message);
+					stderr.printf("%s\n", err.message);
 				} finally {
 					match_uri = null;
 				}
@@ -210,7 +210,7 @@ class Taterm : Gtk.Application
 			try {
 				return GLib.FileUtils.read_link(cwdlink);
 			} catch (FileError err) {
-				stderr.printf(err.message);
+				stderr.printf("%s\n", err.message);
 			}
 			return GLib.Environment.get_home_dir();
 		}
