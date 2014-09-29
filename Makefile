@@ -1,10 +1,10 @@
 VALAC=valac
 VALA_FLAGS=--pkg vte-2.90 --fatal-warnings
 
-taterm:
+all: taterm
 
 % : %.vala
-	$(VALAC) $(VALA_FLAGS) $^
+	$(VALAC) $(VALAFLAGS) $^
 
 %.c : %.vala
-	$(VALAC) -C $(VALA_FLAGS) $^
+	$(VALAC) -C $(VALAFLAGS) $^
