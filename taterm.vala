@@ -131,9 +131,9 @@ class Taterm : Gtk.Application
 				destroy();
 			});
 
-			/* term.beep.connect(() => { */
-			/* 	urgency_hint = true; */
-			/* }); */
+			term.bell.connect(() => {
+				urgency_hint = true;
+			});
 
 			term.window_title_changed.connect(() => {
 				title = term.window_title;
