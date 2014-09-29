@@ -1,5 +1,5 @@
 VALAC=valac
-VALA_FLAGS=--pkg vte-2.90 --fatal-warnings
+VALAFLAGS=--pkg vte-2.91 --pkg gtk+-3.0 --fatal-warnings
 
 all: taterm
 

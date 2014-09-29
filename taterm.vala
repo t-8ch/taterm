@@ -32,12 +32,10 @@ static const string[] COLORS = {
 static const string FG_COLOR = "#c0c0c0";
 static const string BG_COLOR = "#000000";
 
-static const string WORD_CHARS = "";
-
 static Pango.FontDescription font;
-static Gdk.Color[] palette;
-static Gdk.Color fg_color;
-static Gdk.Color bg_color;
+static Gdk.RGBA[] palette;
+static Gdk.RGBA fg_color;
+static Gdk.RGBA bg_color;
 
 public static GLib.Regex uri_regex;
 
@@ -71,12 +69,12 @@ public static int main(string[] args)
 	font = Pango.FontDescription.from_string(FONT);
 
 	for (int i = 0; i < COLORS.length; i++) {
-		Gdk.Color color = Gdk.Color();
-		Gdk.Color.parse(COLORS[i], out color);
+		Gdk.RGBA color = Gdk.RGBA();
+		color.parse(COLORS[i]);
 		palette += color;
 	}
-	Gdk.Color.parse(FG_COLOR, out fg_color);
-	Gdk.Color.parse(BG_COLOR, out bg_color);
+	fg_color.parse(FG_COLOR);
+	bg_color.parse(BG_COLOR);
 
 	return new Taterm().run();
 }
@@ -115,11 +113,10 @@ class Taterm : Gtk.Application
 
 			term = new Terminal();
 
-			has_resize_grip = false;
 			targs = { Vte.get_user_shell() };
 
 			try {
-				term.fork_command_full(0, pwd, targs, null, 0, null, out shell);
+				term.spawn_sync(Vte.PtyFlags.DEFAULT, pwd, targs, null, 0, null, out shell);
 			} catch (Error err) {
 				stderr.printf(err.message);
 			}
@@ -134,9 +131,9 @@ class Taterm : Gtk.Application
 				destroy();
 			});
 
-			term.beep.connect(() => {
-				urgency_hint = true;
-			});
+			/* term.beep.connect(() => { */
+			/* 	urgency_hint = true; */
+			/* }); */
 
 			term.window_title_changed.connect(() => {
 				title = term.window_title;
@@ -161,13 +158,11 @@ class Taterm : Gtk.Application
 
 		public Terminal()
 		{
-			set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.OFF);
+			cursor_blink_mode = Vte.CursorBlinkMode.OFF;
 			scrollback_lines = -1; /* infinity */
 			pointer_autohide = true;
 			set_font(font);
 			set_colors(fg_color, bg_color, palette);
-			set_word_chars(WORD_CHARS);
-
 
 			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
