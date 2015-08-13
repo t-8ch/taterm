@@ -92,8 +92,7 @@ class Taterm : Gtk.Application
 			add_window(new_win);
 			new_win.focus_out_event.connect(() => {
 				pwd = new_win.pwd;
-				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
-				return false;
+				return Gdk.EVENT_PROPAGATE;
 			});
 		});
 	}
@@ -123,8 +122,7 @@ class Taterm : Gtk.Application
 
 			focus_in_event.connect(() => {
 				urgency_hint = false;
-				/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
-				return false;
+				return Gdk.EVENT_PROPAGATE;
 			});
 
 			term.child_exited.connect(() => {
@@ -177,8 +175,7 @@ class Taterm : Gtk.Application
 				);
 			}
 			/* continue calling signalhandlers, why should we stop? */
-			/* TODO change to GDK_EVENT_PROPAGATE, when .vapi provides it */
-			return false;
+			return Gdk.EVENT_PROPAGATE;
 		}
 
 		private void check_regex(long x_pos, long y_pos)
