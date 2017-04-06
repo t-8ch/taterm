@@ -21,16 +21,16 @@ using Gtk;
 using Vte;
 using Pango;
 
-static const string FONT = "11";
-static const string[] COLORS = {
+const string FONT = "11";
+const string[] COLORS = {
 	"#000000", "#c00000", "#00c000", "#c0c000",
 	"#0000c0", "#c000c0", "#00c0c0", "#c0c0c0",
 	"#3f3f3f", "#ff3f3f", "#3fff3f", "#ffff3f",
 	"#3f3fff", "#ff3fff", "#3fffff", "#ffffff"
 };
 
-static const string FG_COLOR = "#c0c0c0";
-static const string BG_COLOR = "#000000";
+const string FG_COLOR = "#c0c0c0";
+const string BG_COLOR = "#000000";
 
 static Pango.FontDescription font;
 static Gdk.RGBA[] palette;
@@ -42,9 +42,9 @@ public static GLib.Regex uri_regex;
 /*
 	Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
 */
-static const string hex_encode = "%[0-9A-F]{2}";
-static const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
-static const string regex_string =
+const string hex_encode = "%[0-9A-F]{2}";
+const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
+const string regex_string =
 	"([a-z0-9][a-z0-9+.-]+):"                               + // scheme
 	"(//)?"                                                 + // it has an authority
 	"(([:"+common_chars+"]|"+hex_encode+")*@)?"             + // userinfo
