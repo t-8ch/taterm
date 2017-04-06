@@ -62,7 +62,7 @@ public static int main(string[] args)
 	try {
 		var regex_flags = RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE;
 		uri_regex = new GLib.Regex(regex_string, regex_flags);
-	} catch (RegexError err) {
+	} catch (GLib.RegexError err) {
 		GLib.assert_not_reached();
 	}
 
