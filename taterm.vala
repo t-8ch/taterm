@@ -109,6 +109,7 @@ class Taterm : Gtk.Application
 
 		public Window(string pwd)
 		{
+			decorated = false;
 			this.pwd = pwd;
 
 			term = new Terminal();
