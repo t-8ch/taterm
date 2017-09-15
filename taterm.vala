@@ -37,7 +37,7 @@ static Gdk.RGBA[] palette;
 static Gdk.RGBA fg_color;
 static Gdk.RGBA bg_color;
 
-public static Vte.Regex uri_regex;
+public static GLib.Regex uri_regex;
 
 /*
 	Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
@@ -61,8 +61,8 @@ public static int main(string[] args)
 {
 	try {
 		var regex_flags = RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE;
-		uri_regex = new Vte.Regex.for_match(regex_string, regex_string.length, regex_flags);
-	} catch (GLib.Error err) {
+		uri_regex = new GLib.Regex(regex_string, regex_flags);
+	} catch (GLib.RegexError err) {
 		GLib.assert_not_reached();
 	}
 
@@ -85,7 +85,7 @@ class Taterm : Gtk.Application
 
 	public Taterm()
 	{
-		Object(application_id: "de.t-8ch.tatermxxx");
+		Object(application_id: "de.t-8ch.taterm");
 
 		activate.connect(() => {
 			var new_win = new Window(pwd);
@@ -163,30 +163,33 @@ class Taterm : Gtk.Application
 			set_colors(fg_color, bg_color, palette);
 
 			button_press_event.connect(handle_button);
-			match_add_regex(uri_regex, 0);
+			match_add_gregex(uri_regex, 0);
 		}
 
 		private bool handle_button(Gdk.EventButton event)
 		{
 			if (event.button == Gdk.BUTTON_PRIMARY) {
-				check_regex(event);
+				check_regex(
+						(long) event.x/get_char_width(),
+						(long) event.y/get_char_height()
+				);
 			}
 			/* continue calling signalhandlers, why should we stop? */
 			return Gdk.EVENT_PROPAGATE;
 		}
 
-		private void check_regex(Gdk.EventButton event)
+		private void check_regex(long x_pos, long y_pos)
 		{
 			/*
 			   this tag shouldn't be necessary but if we don't pass it to match_check()
 			   the whole thing just segfaults
 			*/
 			int tag;
-			match_uri = match_check_event(event, out tag);
+			match_uri = match_check(x_pos, y_pos, out tag);
 
 			if (match_uri != null) {
 				try {
-					Gtk.show_uri_on_window(null, match_uri, Gdk.CURRENT_TIME);
+					Gtk.show_uri(null, match_uri, Gdk.CURRENT_TIME);
 				} catch (Error err) {
 					stderr.printf("%s\n", err.message);
 				} finally {
