@@ -22,6 +22,7 @@ using Vte;
 using Pango;
 
 const string FONT = "11";
+const double FONT_SCALE_STEP = 0.1;
 const string[] COLORS = {
 	"#000000", "#c00000", "#00c000", "#c0c000",
 	"#0000c0", "#c000c0", "#00c0c0", "#c0c0c0",
@@ -162,8 +163,33 @@ class Taterm : Gtk.Application
 			set_font(font);
 			set_colors(fg_color, bg_color, palette);
 
+			key_press_event.connect(handle_key);
 			button_press_event.connect(handle_button);
 			match_add_gregex(uri_regex, 0);
+		}
+
+		private bool handle_key(Gdk.EventKey event)
+		{
+			bool handled = false;
+
+			if (event.state == Gdk.ModifierType.CONTROL_MASK) {
+				switch (event.keyval) {
+					case Gdk.Key.minus:
+						font_scale /= 1 + FONT_SCALE_STEP;
+						handled = true;
+						break;
+					case Gdk.Key.plus:
+						font_scale *= 1 + FONT_SCALE_STEP;
+						handled = true;
+						break;
+					case Gdk.Key.@0:
+						font_scale = 1;
+						handled = true;
+						break;
+				}
+			}
+
+			return handled ? Gdk.EVENT_STOP : Gdk.EVENT_PROPAGATE;
 		}
 
 		private bool handle_button(Gdk.EventButton event)
