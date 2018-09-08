@@ -112,7 +112,7 @@ class Taterm : Gtk.Application
 			decorated = false;
 			this.pwd = pwd;
 
-			term = new Terminal();
+			term = new Terminal(this);
 
 			targs = { Vte.get_user_shell() };
 
@@ -155,9 +155,11 @@ class Taterm : Gtk.Application
 
 
 		string match_uri = null;
+		Gtk.Window window;
 
-		public Terminal()
+		public Terminal(Gtk.Window window)
 		{
+			this.window = window;
 			cursor_blink_mode = Vte.CursorBlinkMode.OFF;
 			scrollback_lines = -1; /* infinity */
 			pointer_autohide = true;
@@ -198,6 +200,7 @@ class Taterm : Gtk.Application
 			switch (event.button) {
 				case Gdk.BUTTON_PRIMARY:
 					check_regex(
+							event,
 							(long) event.x/get_char_width(),
 							(long) event.y/get_char_height()
 							);
@@ -209,7 +212,7 @@ class Taterm : Gtk.Application
 			return Gdk.EVENT_PROPAGATE;
 		}
 
-		private void check_regex(long x_pos, long y_pos)
+		private void check_regex(Gdk.EventButton event, long x_pos, long y_pos)
 		{
 			/*
 			   this tag shouldn't be necessary but if we don't pass it to match_check()
@@ -220,7 +223,7 @@ class Taterm : Gtk.Application
 
 			if (match_uri != null) {
 				try {
-					Gtk.show_uri(null, match_uri, Gdk.CURRENT_TIME);
+					Gtk.show_uri_on_window(window, match_uri, event.time);
 				} catch (Error err) {
 					stderr.printf("%s\n", err.message);
 				} finally {
