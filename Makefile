@@ -2,7 +2,7 @@ PREFIX=/usr
 DESTDIR=
 
 VALAC=valac
-VALAFLAGS=--pkg vte-2.91 --pkg gtk+-3.0 --fatal-warnings
+VALAFLAGS=--pkg vte-2.91 --pkg gtk+-3.0
 INSTALL=install -D
 
 .PHONY: all install install_taterm

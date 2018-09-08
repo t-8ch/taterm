@@ -21,7 +21,7 @@ using Gtk;
 using Vte;
 using Pango;
 
-const string FONT = "11";
+const string FONT = "17";
 const double FONT_SCALE_STEP = 0.1;
 const string[] COLORS = {
 	"#000000", "#c00000", "#00c000", "#c0c000",
@@ -195,13 +195,17 @@ class Taterm : Gtk.Application
 
 		private bool handle_button(Gdk.EventButton event)
 		{
-			if (event.button == Gdk.BUTTON_PRIMARY) {
-				check_regex(
-						(long) event.x/get_char_width(),
-						(long) event.y/get_char_height()
-				);
+			switch (event.button) {
+				case Gdk.BUTTON_PRIMARY:
+					check_regex(
+							(long) event.x/get_char_width(),
+							(long) event.y/get_char_height()
+							);
+					return Gdk.EVENT_PROPAGATE;
+				case Gdk.BUTTON_MIDDLE:
+					
+					return Gdk.EVENT_PROPAGATE;
 			}
-			/* continue calling signalhandlers, why should we stop? */
 			return Gdk.EVENT_PROPAGATE;
 		}
 
