@@ -22,6 +22,11 @@ There may be special support for various window managers in the future.
 * Scroll lock (WIP)
 * Clean build under latest GTK (3.3.18)
 
-##LICENSE
+# Prerequisites
+
+* The Vala compiler
+* libvte-2.91-dev
+
+## LICENSE
 
 GPLv3

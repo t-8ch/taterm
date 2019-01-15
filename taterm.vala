@@ -172,7 +172,7 @@ class Taterm : Gtk.Application
 		{
 			bool handled = false;
 
-			if (event.state == Gdk.ModifierType.CONTROL_MASK) {
+			if ((event.state | Gdk.ModifierType.CONTROL_MASK) != 0) {
 				switch (event.keyval) {
 					case Gdk.Key.minus:
 						font_scale /= 1 + FONT_SCALE_STEP;
