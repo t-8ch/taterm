@@ -24,14 +24,14 @@ using Pango;
 const string FONT = "17";
 const double FONT_SCALE_STEP = 0.1;
 const string[] COLORS = {
-	"#000000", "#c00000", "#00c000", "#c0c000",
-	"#0000c0", "#c000c0", "#00c0c0", "#c0c0c0",
-	"#3f3f3f", "#ff3f3f", "#3fff3f", "#ffff3f",
-	"#3f3fff", "#ff3fff", "#3fffff", "#ffffff"
+	"#073642", "#dc322f", "#859900", "#b58900",
+	"#268bd2", "#d33682", "#2aa198", "#eee8d5",
+	"#002b36", "#cb4b16", "#586e75", "#657b83",
+	"#839496", "#6c71c4", "#939191", "#fdf6e3"
 };
 
-const string FG_COLOR = "#c0c0c0";
-const string BG_COLOR = "#000000";
+const string FG_COLOR = "#657b83";
+const string BG_COLOR = "#002b36";
 
 static Pango.FontDescription font;
 static Gdk.RGBA[] palette;
