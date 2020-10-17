@@ -38,7 +38,8 @@ static Gdk.RGBA[] palette;
 static Gdk.RGBA fg_color;
 static Gdk.RGBA bg_color;
 
-public static GLib.Regex uri_regex;
+const uint PCRE2_CASELESS = 0x00000008u;
+public static Vte.Regex uri_regex;
 
 /*
 	Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
@@ -61,9 +62,9 @@ const string regex_string =
 public static int main(string[] args)
 {
 	try {
-		var regex_flags = RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE;
-		uri_regex = new GLib.Regex(regex_string, regex_flags);
-	} catch (GLib.RegexError err) {
+		uri_regex = new Vte.Regex.for_match(regex_string, regex_string.length, PCRE2_CASELESS);
+		uri_regex.jit(0);
+	} catch (GLib.Error e) {
 		GLib.assert_not_reached();
 	}
 
@@ -168,7 +169,7 @@ class Taterm : Gtk.Application
 
 			key_press_event.connect(handle_key);
 			button_press_event.connect(handle_button);
-			match_add_gregex(uri_regex, 0);
+			match_add_regex(uri_regex, 0);
 		}
 
 		private bool handle_key(Gdk.EventKey event)
