@@ -199,11 +199,7 @@ class Taterm : Gtk.Application
 		{
 			switch (event.button) {
 				case Gdk.BUTTON_PRIMARY:
-					check_regex(
-							event,
-							(long) event.x/get_char_width(),
-							(long) event.y/get_char_height()
-							);
+					check_regex(event);
 					return Gdk.EVENT_PROPAGATE;
 				case Gdk.BUTTON_MIDDLE:
 					
@@ -212,14 +208,14 @@ class Taterm : Gtk.Application
 			return Gdk.EVENT_PROPAGATE;
 		}
 
-		private void check_regex(Gdk.EventButton event, long x_pos, long y_pos)
+		private void check_regex(Gdk.EventButton event)
 		{
 			/*
 			   this tag shouldn't be necessary but if we don't pass it to match_check()
 			   the whole thing just segfaults
 			*/
 			int tag;
-			match_uri = match_check(x_pos, y_pos, out tag);
+			match_uri = match_check_event(event, out tag);
 
 			if (match_uri != null) {
 				try {
