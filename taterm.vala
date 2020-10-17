@@ -42,23 +42,8 @@ const uint PCRE2_CASELESS = 0x00000008u;
 const uint PCRE2_MULTILINE = 0x00000400u;
 public static Vte.Regex uri_regex;
 
-/*
-	Credits: http://snipplr.com/view/6889/regular-expressions-for-uri-validationparsing/
-*/
-const string hex_encode = "%[0-9A-F]{2}";
-const string common_chars = "\\\\a-z0-9-._~!$&'()*+,;=";
-const string regex_string =
-	"([a-z0-9][a-z0-9+.-]+):"                               + // scheme
-	"(//)?"                                                 + // it has an authority
-	"(([:"+common_chars+"]|"+hex_encode+")*@)?"             + // userinfo
-	"(["+common_chars+"]|"+hex_encode+"){3,}"               + // host
-	"(:\\d{1,5})?"                                          + // port
-	"(/([:@/"+common_chars+")]|"+hex_encode+")*)?"          + // path
-	// v  be flexible with shell escaping here
-	"(\\\\?\\?(["+common_chars+":/?@]|"+hex_encode+")*)?"   + // query string
-	"(\\\\?\\#(["+common_chars+"+:/?@]|"+hex_encode+")*)?"  + // fragment
-	"(?=[\\s)}>\"\',;])"                                      // look ahead
-	;
+// generated with get-uri-regex.c from terminal-regex.h from Gnome Terminal 3.38.1
+const string regex_string = """(?<APOS_START>(?<='))?(?(DEFINE)(?<S4>(?x: (?: [0-9] | [1-9][0-9] | 1[0-9]{2} | 2[0-4][0-9] | 25[0-5] ) (?! [0-9] ) )))(?(DEFINE)(?<IPV4>(?x: (?: (?&S4) \. ){3} (?&S4) )))(?(DEFINE)(?<S6>[[:xdigit:]]{1,4})(?<CS6>:(?&S6))(?<S6C>(?&S6):))(?(DEFINE)(?<IPV6>(?x: (?: (?x: :: ) | (?x: : (?&CS6){1,7} ) | (?x: (?! (?: [[:xdigit:]]*: ){8} ) (?&S6C){1,6} (?&CS6){1,6} ) | (?x: (?&S6C){1,7} : ) | (?x: (?&S6C){7} (?&S6) ) | (?: (?x: (?&S6C){6} ) | (?x: :: (?&S6C){0,5} ) | (?x: (?! (?: [[:xdigit:]]*: ){7} ) (?&S6C){1,4} (?&CS6){1,4} ) : | (?x: (?&S6C){1,5} : ) ) (?&IPV4) ) (?! [.:[:xdigit:]] ) )))(?(DEFINE)(?<PATH_INNER>(?x: (?: [-[:alnum:]\Q_$.+!*,:;@&=?/~#|%'\E]* (?: \( (?&PATH_INNER) \) | \[ (?&PATH_INNER) \] ) )* [-[:alnum:]\Q_$.+!*,:;@&=?/~#|%'\E]* )))(?(DEFINE)(?<PATH>(?x: (?: [-[:alnum:]\Q_$.+!*,:;@&=?/~#|%'\E]* (?: \( (?&PATH_INNER) \) | \[ (?&PATH_INNER) \] ) )* (?: [-[:alnum:]\Q_$.+!*,:;@&=?/~#|%'\E]* (?(<APOS_START>)[-[:alnum:]\Q_$+*:@&=/~#|%\E]|[-[:alnum:]\Q_$+*:@&=/~#|%'\E]) )? )))(?ix: news | telnet | nntp | https? | ftps? | sftp | webcal )://(?:[-+.[:alnum:]]+(?x: :[-[:alnum:]\Q,?;.:/!%$^*&~"#'\E]* )?@)?(?x: (?x: (?: (?x: [-[:alnum:]] | (?! [[:ascii:]] ) [[:graph:]] )+ \. )* (?x: [-[:alnum:]] | (?! [[:ascii:]] ) [[:graph:]] )* (?! [0-9] ) (?x: [-[:alnum:]] | (?! [[:ascii:]] ) [[:graph:]] )+ ) | (?&IPV4) | \[ (?&IPV6) \] )(?x: \:(?x: (?: [1-9][0-9]{0,3} | [1-5][0-9]{4} | 6[0-4][0-9]{3} | 65[0-4][0-9]{2} | 655[0-2][0-9] | 6553[0-5] ) (?! [0-9] ) ) )?(?x: /(?&PATH) )?""";
 
 public static int main(string[] args)
 {
