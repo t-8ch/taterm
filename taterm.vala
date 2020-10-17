@@ -21,7 +21,7 @@ using Gtk;
 using Vte;
 using Pango;
 
-const string FONT = "17";
+const string FONT = "11";
 const double FONT_SCALE_STEP = 0.1;
 const string[] COLORS = {
 	"#073642", "#dc322f", "#859900", "#b58900",
