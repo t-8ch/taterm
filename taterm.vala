@@ -39,6 +39,7 @@ static Gdk.RGBA fg_color;
 static Gdk.RGBA bg_color;
 
 const uint PCRE2_CASELESS = 0x00000008u;
+const uint PCRE2_MULTILINE = 0x00000400u;
 public static Vte.Regex uri_regex;
 
 /*
@@ -62,7 +63,7 @@ const string regex_string =
 public static int main(string[] args)
 {
 	try {
-		uri_regex = new Vte.Regex.for_match(regex_string, regex_string.length, PCRE2_CASELESS);
+		uri_regex = new Vte.Regex.for_match(regex_string, regex_string.length, PCRE2_CASELESS | PCRE2_MULTILINE);
 		uri_regex.jit(0);
 	} catch (GLib.Error e) {
 		GLib.assert_not_reached();
